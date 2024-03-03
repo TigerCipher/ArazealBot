@@ -1,8 +1,11 @@
+import json
 import os
 import discord
 from discord.ext import commands
 
 from dotenv import load_dotenv
+
+import entity
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -33,5 +36,10 @@ async def on_message(message):
 
     await client.process_commands(message)
 
+
+testPlayer = entity.Character('Billy the Kid', 10, 10, 5, 6, 10, 100)
+testPlayer2 = entity.Character('John', 20, 20, 10, 5, 100, 1000)
+
+entity.save_all_characters()
 
 client.run(TOKEN)

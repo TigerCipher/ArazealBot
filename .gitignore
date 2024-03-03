@@ -1,1 +1,4 @@
 *.env
+test.json
+characters.json
+__pycache__
