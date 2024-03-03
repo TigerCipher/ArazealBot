@@ -29,7 +29,40 @@ class Character(Entity):
 
 
 def save_all_characters():
-    chars = [c.__dict__ for c in Character.all_characters]
+    # Try reading and loading existing characters first so no characters not actively loaded are not removed
+    try:
+        with open('characters.json', 'r') as infile:
+            chars = json.load(infile)
+    except FileNotFoundError:
+        chars = {}
+
+    for c in Character.all_characters:
+        user_id_str = str(c.user_id)
+
+        # if an existing character, update
+        if user_id_str in chars:
+            chars[user_id_str].update(c.__dict__)
+        else:
+            chars[user_id_str] = c.__dict__
+
     json_data = json.dumps(chars, indent=2)
     with open('characters.json', 'w') as outfile:
         outfile.write(json_data)
+
+
+def load_character_by_id(user_id):
+    try:
+        with open('characters.json', 'r') as infile:
+            chars = json.load(infile)
+            if str(user_id) in chars:
+                char_data = chars[str(user_id)]
+                return Character(**char_data)
+            else:
+                print(f'No character found for user (ID: {user_id})')
+                return None
+    except FileNotFoundError:
+        print('characters.json not found')
+        return None
+    except json.JSONDecodeError:
+        print('Error while decoding characters JSON')
+        return None
