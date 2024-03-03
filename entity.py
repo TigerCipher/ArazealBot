@@ -1,5 +1,6 @@
 import json
-
+import random
+import rpg
 
 # base class for living things
 class Entity:
@@ -9,10 +10,21 @@ class Entity:
         self.hp = hp
         self.max_hp = max_hp
         self.attack = attack
+        if defense > 100:
+            defense = 100
         self.defense = defense
 
     def test_print_info(self):
         print(f'{self.name} has {self.hp} hp remaining')
+
+    def fight(self, other):
+        chance_hit = rpg.roll_dice('d100')
+        if chance_hit >= other.defense:
+            damage = self.attack
+        else:
+            damage = 0
+        other.hp -= damage
+        return self.attack, other.hp <= 0   # returns damage and whether it was a fatal attack or not
 
 
 class Character(Entity):
