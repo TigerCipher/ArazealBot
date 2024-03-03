@@ -3,14 +3,13 @@ import json
 
 # base class for living things
 class Entity:
-    def __init__(self, name, hp, max_hp, attack, defense, xp, gold):
+    def __init__(self, name, hp, level, max_hp, attack, defense):
         self.name = name
+        self.level = level
         self.hp = hp
         self.max_hp = max_hp
         self.attack = attack
         self.defense = defense
-        self.xp = xp
-        self.gold = gold
 
     def test_print_info(self):
         print(f'{self.name} has {self.hp} hp remaining')
@@ -19,8 +18,13 @@ class Entity:
 class Character(Entity):
     all_characters = []
 
-    def __init__(self, name, hp, max_hp, attack, defense, xp, gold):
-        super().__init__(name, hp, max_hp, attack, defense, xp, gold)
+    def __init__(self, name, level, hp, max_hp, attack, defense, xp, gold, mana, inventory, user_id):
+        super().__init__(name, level, hp, max_hp, attack, defense)
+        self.xp = xp
+        self.gold = gold
+        self.mana = mana
+        self.inventory = inventory
+        self.user_id = user_id
         Character.all_characters.append(self)
 
 

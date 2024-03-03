@@ -37,8 +37,10 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-testPlayer = entity.Character('Billy the Kid', 10, 10, 5, 6, 10, 100)
-testPlayer2 = entity.Character('John', 20, 20, 10, 5, 100, 1000)
+testPlayer = entity.Character('Billy the Kid', 2, 10, 10, 5, 6, 10, 100,
+                              15, ['sword', 'healing potion', 'rope'], 4353465654645)
+testPlayer2 = entity.Character('John', 5, 20, 20, 10, 5, 100, 1000,
+                               35, ['bow', '20 arrows', 'dagger'], 54563456)
 
 entity.save_all_characters()
 
