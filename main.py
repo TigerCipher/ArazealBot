@@ -6,6 +6,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 import entity
+import rpg
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -19,9 +20,20 @@ intents.message_content = True
 client = commands.Bot(command_prefix='$', intents=intents)
 
 
-@client.command(name='foo', help='test command')
-async def foo(ctx, arg):
-    await ctx.send(arg)
+@client.command(help='roll a dice of a given type')
+async def roll(ctx, dice_type: str = commands.parameter(description='d4, d6, d8, d10, d12, d20, d100'),
+               num_rolls: int = commands.parameter(description='Number of dice to roll', default=1)):
+    result = 0
+    rolls = []
+    try:
+        result, rolls = rpg.roll_dice(dice_type, int(num_rolls))
+    except ValueError:
+        await ctx.send('Invalid dice type. Valid types are: d4, d6, d8, d10, d12, d20, d100')
+        return
+    if num_rolls > 1:
+        await ctx.send(f'You rolled a {result} from rolls: {rolls}')
+    else:
+        await ctx.send(f'You rolled a {result}')
 
 
 @client.event

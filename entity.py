@@ -18,7 +18,7 @@ class Entity:
         print(f'{self.name} has {self.hp} hp remaining')
 
     def fight(self, other):
-        chance_hit = rpg.roll_dice('d100')
+        chance_hit, _ = rpg.roll_dice('d100')
         if chance_hit >= other.defense:
             damage = self.attack
         else:
