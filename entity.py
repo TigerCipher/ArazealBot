@@ -2,9 +2,10 @@ import json
 import random
 import rpg
 
+
 # base class for living things
 class Entity:
-    def __init__(self, name, hp, level, max_hp, attack, defense):
+    def __init__(self, name, hp, level, max_hp, attack, defense, xp, gold):
         self.name = name
         self.level = level
         self.hp = hp
@@ -13,6 +14,8 @@ class Entity:
         if defense > 100:
             defense = 100
         self.defense = defense
+        self.xp = xp
+        self.gold = gold
 
     def test_print_info(self):
         print(f'{self.name} has {self.hp} hp remaining')
@@ -24,21 +27,39 @@ class Entity:
         else:
             damage = 0
         other.hp -= damage
-        return self.attack, other.hp <= 0   # returns damage and whether it was a fatal attack or not
+        return self.attack, other.hp <= 0  # returns damage and whether it was a fatal attack or not
 
 
 class Character(Entity):
     all_characters = []
+    level_cap = 50
 
     def __init__(self, name, level, hp, max_hp, attack, defense, xp, gold, mana, inventory, user_id):
-        super().__init__(name, level, hp, max_hp, attack, defense)
-        self.xp = xp
-        self.gold = gold
+        super().__init__(name, level, hp, max_hp, attack, defense, xp, gold)
         self.mana = mana
         self.inventory = inventory
         self.user_id = user_id
         Character.all_characters.append(self)
 
+
+class Enemy(Entity):
+    def __init__(self, name, level, max_hp, attack, defense, xp, gold):
+        super().__init__(name, max_hp, level, max_hp, attack, defense, xp, gold)
+
+
+# BEGIN ENEMIES
+
+class Spider(Enemy):
+    def __init__(self):
+        super().__init__("Spider", 1, 3, 2, 1, 2, 1)
+
+
+class Rat(Enemy):
+    def __init__(self):
+        super().__init__("Rat", 1, 2, 1, 1, 1, 1)
+
+
+# END ENEMIES
 
 def save_all_characters():
     # Try reading and loading existing characters first so no characters not actively loaded are not removed
